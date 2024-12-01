@@ -23,9 +23,9 @@ class objPos
         void setObjPos(objPos o);        
         void setObjPos(int xPos, int yPos, char sym);  
 
-        ~objPos();
-        objPos(const objPos &o);
-        objPos& operator=(const objPos &o);
+        ~objPos(); //destructor
+        objPos(const objPos &o); //Copy constructor
+        objPos& operator=(const objPos &o); //Copy assignment
 
         objPos getObjPos() const;
         char getSymbol() const;

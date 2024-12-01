@@ -68,6 +68,43 @@ void Player::updatePlayerDir()
 void Player::movePlayer()
 {
     // PPA3 Finite State Machine logic
+    switch (myDir){
+            case UP:
+                playerPos.pos->y--;
+                break;
+            case DOWN:
+                playerPos.pos->y++;
+                break;
+            case LEFT: 
+                playerPos.pos->x--;
+                break;
+            case RIGHT:
+                playerPos.pos->x++;
+                break;
+            case STOP:
+                break;    
+            default:
+                break;             
+            
+    }
+
+    // Apply wrap-around logic
+    int boardWidth = mainGameMechsRef->getBoardSizeX();
+    int boardHeight = mainGameMechsRef->getBoardSizeY();
+
+    if (playerPos.pos->x < 1) {
+        playerPos.pos->x = boardWidth - 2;
+    }
+    if (playerPos.pos->x >= boardWidth - 1) {
+        playerPos.pos->x = 1;
+    }
+    if (playerPos.pos->y < 1) {
+        playerPos.pos->y = boardHeight - 2;
+    }
+    if (playerPos.pos->y >= boardHeight - 1) {
+        playerPos.pos->y = 1;
+    }
+
 }
 
 // More methods to be added

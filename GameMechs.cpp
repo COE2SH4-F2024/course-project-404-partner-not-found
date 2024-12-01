@@ -1,8 +1,9 @@
 #include "GameMechs.h"
+#include "MacUILib.h"
 
 GameMechs::GameMechs()
 {
-    input = '\0';
+    input = 0;
     exitFlag = false;
     loseFlag = false;
     score = 0;
@@ -12,7 +13,7 @@ GameMechs::GameMechs()
 
 GameMechs::GameMechs(int boardX, int boardY)
 {
-    input = '\0';
+    input = 0;
     exitFlag = false;
     loseFlag = false;
     score = 0;
@@ -37,9 +38,15 @@ bool GameMechs::getLoseFlagStatus() const
 }
     
 
-char GameMechs::getInput() const
+char GameMechs::getInput()
 {
-    return input;
+    if (MacUILib_hasChar() != 0) {
+        input = MacUILib_getChar();
+        if (input == '!') {
+            setExitTrue(); // Exit the game if '!' is pressed
+        }
+    }
+    return input; // Return the input character
 }
 
 int GameMechs::getScore() const
@@ -80,7 +87,7 @@ void GameMechs::setInput(char this_input)
 
 void GameMechs::clearInput()
 {
-    input = '\0';
+    input = 0;
 }
 
 
