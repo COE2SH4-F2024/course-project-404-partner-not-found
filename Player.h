@@ -25,6 +25,7 @@ class Player
         void movePlayer();
 
         // More methods to be added here
+        const objPosArrayList& getPlayerPosListRef() const;
 
     private:
         objPos playerPos; // Upgrade this in iteration 3.       
@@ -32,6 +33,8 @@ class Player
 
         // Need a reference to the Main Game Mechanisms
         GameMechs* mainGameMechsRef;
+
+        objPosArrayList playerPosList; // Store snake body positions
 };
 
 #endif

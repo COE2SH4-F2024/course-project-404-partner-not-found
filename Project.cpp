@@ -1,9 +1,10 @@
 #include <iostream>
 #include "MacUILib.h"
-#include "objPos.h"
 
+#include "objPos.h"
 #include "Player.h"
 #include "GameMechs.h"
+#include "food.h"
 
 using namespace std;
 
@@ -11,6 +12,7 @@ using namespace std;
 
 Player *myPlayer; // global variable to instantiate player obj 
 GameMechs *myGM;
+Food *myFood;
 
 bool exitFlag;
 
@@ -48,8 +50,7 @@ void Initialize(void)
 
     myGM = new GameMechs(); //default setting
     myPlayer = new Player(myGM);
-
-    exitFlag = false;
+    myFood = new Food(myGM->getBoardSizeX(), myGM->getBoardSizeY());
 }
 
 void GetInput(void)
@@ -71,7 +72,14 @@ void RunLogic(void)
     myPlayer->updatePlayerDir(); // Update player direction
     myPlayer->movePlayer();      // Move the player based on the direction
 
-    
+    //objPos playerPos = myPlayer -> getPlayerPos();
+
+    objPos playerHead = myPlayer->getPlayerPos();
+    if (playerHead.pos->x == myFood->getFoodPos().pos->x && playerHead.pos->y == myFood->getFoodPos().pos->y) {
+        myPlayer->movePlayer(); // Grow the snake
+        myGM->incrementScore(); // Increase score
+        myFood->generateFood(myPlayer->getPlayerPosListRef()); // Generate new food
+    }
 
     myGM->clearInput(); // Clear the input to prevent re-processing  
 }
@@ -80,9 +88,15 @@ void DrawScreen(void)
 {
     MacUILib_clearScreen();    
 
+    //Creating objects
     objPos playerPos = myPlayer -> getPlayerPos();
+    objPos foodPos = myFood -> getFoodPos();
 
+    //Print Statements
     MacUILib_printf("Player [x, y, sym] = [%d, %d, %c]\n", playerPos.pos->x, playerPos.pos->y, playerPos.symbol);
+    MacUILib_printf("Food [x, y, sym] = [%d, %d, %c]\n", foodPos.pos->x, foodPos.pos->y, foodPos.symbol);
+    MacUILib_printf("Score: %d\n", myGM->getScore());
+
 
     int row, col;
     int boardWidth = myGM->getBoardSizeX();
@@ -97,6 +111,10 @@ void DrawScreen(void)
             // if we're at the player's position
             else if (row == playerPos.pos->y && col == playerPos.pos->x) {
                 MacUILib_printf("%c", playerPos.symbol);  // Player character
+            }
+            // if we're at the food position
+            else if (row == foodPos.pos->y && col == foodPos.pos->x) {
+                MacUILib_printf("%c", foodPos.symbol);  // Food character
             }
             // Otherwise, print a space
             else {
@@ -119,6 +137,7 @@ void CleanUp(void)
 
     delete myPlayer;
     delete myGM;
+    delete myFood;
 
     MacUILib_uninit();
 }

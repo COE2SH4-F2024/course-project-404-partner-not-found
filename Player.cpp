@@ -8,8 +8,8 @@ Player::Player(GameMechs* thisGMRef)
 
     // more actions to be included
 
-    playerPos.pos->x = 10;
-    playerPos.pos->y = 10;
+    playerPos.pos->x = mainGameMechsRef -> getBoardSizeX ()/2;
+    playerPos.pos->y = mainGameMechsRef -> getBoardSizeY ()/2;
     playerPos.symbol = '@';
 
 }
@@ -67,6 +67,7 @@ void Player::updatePlayerDir()
 }
 void Player::movePlayer()
 {
+    
     // PPA3 Finite State Machine logic
     switch (myDir){
             case UP:
@@ -108,3 +109,6 @@ void Player::movePlayer()
 }
 
 // More methods to be added
+const objPosArrayList& Player::getPlayerPosListRef() const {
+    return playerPosList;
+}
