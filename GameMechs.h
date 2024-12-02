@@ -16,6 +16,7 @@ class GameMechs
         bool exitFlag;
         bool loseFlag;
         int score;
+        int speed; //speed changing variable added
 
         int boardSizeX;
         int boardSizeY;
@@ -35,6 +36,10 @@ class GameMechs
         char getInput();
         void setInput(char this_input);
         void clearInput();
+
+        //Speed getter and setter
+        int getSpeed() const;
+        void setSpeed(int newSpeed);
 
         int getBoardSizeX() const;
         int getBoardSizeY() const;

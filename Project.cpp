@@ -58,6 +58,13 @@ void GetInput(void)
     if (MacUILib_hasChar()) {
         char input = MacUILib_getChar();
         myGM->setInput(input); // Set the input in the GameMechs object
+
+        // Adjust speed if '=' or '-' is pressed
+        if (input == '=') {
+            myGM->setSpeed(myGM->getSpeed() - 10000); // Increase speed (reduce delay)
+        } else if (input == '-') {
+            myGM->setSpeed(myGM->getSpeed() + 10000); // Decrease speed (increase delay)
+        }
     
     }
 }
@@ -95,6 +102,7 @@ void DrawScreen(void)
     //Print Statements
     MacUILib_printf("Player [x, y, sym] = [%d, %d, %c]\n", playerPos.pos->x, playerPos.pos->y, playerPos.symbol);
     MacUILib_printf("Food [x, y, sym] = [%d, %d, %c]\n", foodPos.pos->x, foodPos.pos->y, foodPos.symbol);
+    MacUILib_printf("Speed Delay: %d ms\n", myGM->getSpeed());
     MacUILib_printf("Score: %d\n", myGM->getScore());
 
 
@@ -127,7 +135,8 @@ void DrawScreen(void)
 
 void LoopDelay(void)
 {
-    MacUILib_Delay(DELAY_CONST); // 0.1s delay
+    //MacUILib_Delay(DELAY_CONST); // 0.1s delay
+    MacUILib_Delay(myGM->getSpeed());
 }
 
 

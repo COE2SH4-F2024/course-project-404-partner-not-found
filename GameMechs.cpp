@@ -7,6 +7,7 @@ GameMechs::GameMechs()
     exitFlag = false;
     loseFlag = false;
     score = 0;
+    speed = 100000;
     boardSizeX = 30;
     boardSizeY = 15;
 }
@@ -17,6 +18,7 @@ GameMechs::GameMechs(int boardX, int boardY)
     exitFlag = false;
     loseFlag = false;
     score = 0;
+    speed = 100000;
     boardSizeX = boardX;
     boardSizeY = boardY;
 }
@@ -92,4 +94,17 @@ void GameMechs::clearInput()
 
 
 // More methods should be added here
+
+int GameMechs::getSpeed() const 
+{
+    return speed;
+}
+
+void GameMechs::setSpeed(int newSpeed) 
+{
+    // Ensure speed stays within a reasonable range
+    if (newSpeed >= 10000 && newSpeed <= 100000) {
+        speed = newSpeed;
+    }
+}
 
