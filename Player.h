@@ -22,13 +22,13 @@ class Player
 
         objPos getPlayerPos() const; // Upgrade this in iteration 3.       
         void updatePlayerDir();
-        void movePlayer();
+        void movePlayer(bool foodConsumed);
 
         // More methods to be added here
-        const objPosArrayList& getPlayerPosListRef() const;
+        const objPosArrayList& getPlayerPosListRef() const; //the upgrade needed for iteration 3
 
     private:
-        objPos playerPos; // Upgrade this in iteration 3.       
+        //objPos playerPos; // No longer need this in iteration 3     
         enum Dir myDir;
 
         // Need a reference to the Main Game Mechanisms

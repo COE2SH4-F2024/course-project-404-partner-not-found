@@ -77,13 +77,15 @@ void RunLogic(void)
     }
     
     myPlayer->updatePlayerDir(); // Update player direction
-    myPlayer->movePlayer();      // Move the player based on the direction
+    //myPlayer->movePlayer();      // Move the player based on the direction
 
     //objPos playerPos = myPlayer -> getPlayerPos();
 
-    objPos playerHead = myPlayer->getPlayerPos();
-    if (playerHead.pos->x == myFood->getFoodPos().pos->x && playerHead.pos->y == myFood->getFoodPos().pos->y) {
-        myPlayer->movePlayer(); // Grow the snake
+    objPos playerHead = myPlayer->getPlayerPosListRef().getHeadElement();
+    objPos foodPos = myFood->getFoodPos();
+
+    if (playerHead.pos->x == foodPos.pos->x && playerHead.pos->y == foodPos.pos->y) {
+        myPlayer->movePlayer(true); // Grow the snake
         myGM->incrementScore(); // Increase score
         myFood->generateFood(myPlayer->getPlayerPosListRef()); // Generate new food
     }
@@ -96,41 +98,64 @@ void DrawScreen(void)
     MacUILib_clearScreen();    
 
     //Creating objects
-    objPos playerPos = myPlayer -> getPlayerPos();
+    //objPos playerPos = myPlayer -> getPlayerPos(); //from iteration 2, commented out
+    const objPosArrayList& snakeBody = myPlayer->getPlayerPosListRef();
     objPos foodPos = myFood -> getFoodPos();
-
-    //Print Statements
-    MacUILib_printf("Player [x, y, sym] = [%d, %d, %c]\n", playerPos.pos->x, playerPos.pos->y, playerPos.symbol);
-    MacUILib_printf("Food [x, y, sym] = [%d, %d, %c]\n", foodPos.pos->x, foodPos.pos->y, foodPos.symbol);
-    MacUILib_printf("Speed Delay: %d ms\n", myGM->getSpeed());
-    MacUILib_printf("Score: %d\n", myGM->getScore());
-
 
     int row, col;
     int boardWidth = myGM->getBoardSizeX();
     int boardHeight = myGM->getBoardSizeY();
 
+    MacUILib_printf("===========Snake Game===========\n\n");
+    MacUILib_printf("Press = to increase speed\n");
+    MacUILib_printf("Press - to decrease speed\n\n");
+
     for (row = 0; row < boardHeight; row++) {
         for (col = 0; col < boardWidth; col++) {
-            // if we're on the border
-            if (row == 0 || row == boardHeight - 1 || col == 0 || col == boardWidth - 1) {
-                MacUILib_printf("#");  // Border character
+            bool isDrawn = false;
+
+            // Draw borders
+            if (row == 0 || row == myGM->getBoardSizeY() - 1 || col == 0 || col == myGM->getBoardSizeX() - 1) {
+                MacUILib_printf("%c", '#'); // Border symbol
+                isDrawn = true;
             }
-            // if we're at the player's position
-            else if (row == playerPos.pos->y && col == playerPos.pos->x) {
-                MacUILib_printf("%c", playerPos.symbol);  // Player character
+
+            // Draw food
+            else if (!isDrawn && row == foodPos.pos->y && col == foodPos.pos->x) {
+                MacUILib_printf("%c", foodPos.symbol); // Food symbol
+                isDrawn = true;
             }
-            // if we're at the food position
-            else if (row == foodPos.pos->y && col == foodPos.pos->x) {
-                MacUILib_printf("%c", foodPos.symbol);  // Food character
+
+            // Draw snake body
+            else if (!isDrawn) {
+                for (int i = 0; i < snakeBody.getSize(); ++i) {
+                    objPos segment = snakeBody.getElement(i);
+
+                    if (row == segment.pos->y && col == segment.pos->x) {
+                        MacUILib_printf("%c", segment.symbol); // Snake body symbol
+                        isDrawn = true;
+                        break;
+                    }
+                }
             }
-            // Otherwise, print a space
-            else {
+
+            // Draw empty space
+            if (!isDrawn) {
                 MacUILib_printf(" ");
             }
         }
         MacUILib_printf("\n");  // Move to the next row
     }
+
+    //Print Statements
+    MacUILib_printf("\nYour Score: %d\n", myGM->getScore());
+    MacUILib_printf("Speed Delay: %d ms\n", myGM->getSpeed());
+
+    //MacUILib_printf("\nPlayer [x, y, symbol] = [%d, %d, %c]\n", playerPos.pos->x, playerPos.pos->y, playerPos.symbol);
+    MacUILib_printf("Food [x, y, symbol] = [%d, %d, %c]\n", foodPos.pos->x, foodPos.pos->y, foodPos.symbol);
+    
+
+
 }
 
 void LoopDelay(void)
