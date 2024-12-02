@@ -16,7 +16,7 @@ public:
     Food(int boardX, int boardY);
     ~Food();
 
-    void generateFood(const objPosArrayList& playerPositions);
+    void generateFood(const objPosArrayList* playerPositions);
     objPos getFoodPos() const;
 };
 

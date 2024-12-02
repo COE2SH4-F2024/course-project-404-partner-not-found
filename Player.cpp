@@ -13,21 +13,28 @@ Player::Player(GameMechs* thisGMRef)
     // playerPos.symbol = '@';
 
     //Updated for iteration 3
-    playerPosList.insertTail(objPos(mainGameMechsRef->getBoardSizeX() / 2, mainGameMechsRef->getBoardSizeY() / 2, '@'));
+    //playerPosList.insertTail(objPos(mainGameMechsRef->getBoardSizeX() / 2, mainGameMechsRef->getBoardSizeY() / 2, '@'));
+
+    // edit by Bishal 
+    
+    playerPosList = new objPosArrayList();
+    objPos initialPosition(mainGameMechsRef->getBoardSizeX() / 2, mainGameMechsRef->getBoardSizeY() / 2, '@');
+    playerPosList->insertHead(initialPosition);
+    
 }
 
 
 Player::~Player()
 {
-    // delete any heap members here (LEAVE EMPTY FOR NOW)
+    // delete any heap members here 
+    delete playerPosList;
 }
 
 objPos Player::getPlayerPos() const // upgraded for iteration 3
 {
     // return the reference to the playerPos arrray list
-    return playerPosList.getHeadElement(); 
+    return playerPosList->getHeadElement(); 
 }
-
 
 
 void Player::updatePlayerDir()
@@ -66,18 +73,34 @@ void Player::updatePlayerDir()
                 myDir = STOP;
                 break;
         }
+        mainGameMechsRef->clearInput(); // clears input 
     }
 }
+
+
 void Player::movePlayer(bool foodConsumed)
 {
     // Calculate new head position based on direction
-    int newX = playerPosList.getHeadElement().pos->x;
-    int newY = playerPosList.getHeadElement().pos->y;
+    int newX = playerPosList->getHeadElement().pos->x;
+    int newY = playerPosList->getHeadElement().pos->y;
     
     // PPA3 Finite State Machine logic
     switch (myDir){
            case UP:    
-            newY--; 
+            newY--; // initial code snipped 
+
+            /*
+            // reference code 
+            //newY = (headPos.pos->y - 1) > 0 ? headPos.pos->y - 1 : mainGameMechsRef->getBoardSizeY() - 2; 
+            if ((headPos.pos->y - 1) > 0) 
+            {
+                newY = headPos.pos->y - 1;
+            }
+            else 
+            {
+                newY = mainGameMechsRef->getBoardSizeY() - 2;
+            }
+            */ 
             break;
         case DOWN:  
             newY++; 
@@ -111,16 +134,20 @@ void Player::movePlayer(bool foodConsumed)
     }
 
     // Insert new head position
-    playerPosList.insertHead(objPos(newX, newY, '&'));
+    playerPosList->insertHead(objPos(newX, newY, '&'));
+    playerPosList->removeTail();
 
     // Remove the tail unless food was consumed
+    
     if (!foodConsumed) {
-        playerPosList.removeTail();
+        playerPosList->removeTail();
     }
+    
 
 }
 
 // More methods to be added
-const objPosArrayList& Player::getPlayerPosListRef() const {
+objPosArrayList* Player::getPlayerPosListRef() const
+{
     return playerPosList;
 }

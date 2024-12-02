@@ -16,7 +16,7 @@ Food::~Food() {
     // Destructor - nothing to clean up
 }
 
-void Food::generateFood(const objPosArrayList& playerPositions) {
+void Food::generateFood(const objPosArrayList* playerPositions) {
     bool validPosition = false;
     int newX, newY;
 
@@ -27,8 +27,8 @@ void Food::generateFood(const objPosArrayList& playerPositions) {
         validPosition = true;
 
         // Check if new position overlaps with any player body part
-        for (int i = 0; i < playerPositions.getSize(); ++i) {
-            objPos playerPos = playerPositions.getElement(i);
+        for (int i = 0; i < playerPositions->getSize(); ++i) {
+            objPos playerPos = playerPositions->getElement(i);
             if (playerPos.pos->x == newX && playerPos.pos->y == newY) {
                 validPosition = false;
                 break;

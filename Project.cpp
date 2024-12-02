@@ -81,8 +81,10 @@ void RunLogic(void)
 
     //objPos playerPos = myPlayer -> getPlayerPos();
 
-    objPos playerHead = myPlayer->getPlayerPosListRef().getHeadElement();
+    objPos playerHead = myPlayer->getPlayerPosListRef()->getHeadElement();
     objPos foodPos = myFood->getFoodPos();
+
+    myPlayer->movePlayer(true); 
 
     if (playerHead.pos->x == foodPos.pos->x && playerHead.pos->y == foodPos.pos->y) {
         myPlayer->movePlayer(true); // Grow the snake
@@ -99,7 +101,7 @@ void DrawScreen(void)
 
     //Creating objects
     //objPos playerPos = myPlayer -> getPlayerPos(); //from iteration 2, commented out
-    const objPosArrayList& snakeBody = myPlayer->getPlayerPosListRef();
+    const objPosArrayList* snakeBody = myPlayer->getPlayerPosListRef();
     objPos foodPos = myFood -> getFoodPos();
 
     int row, col;
@@ -128,8 +130,8 @@ void DrawScreen(void)
 
             // Draw snake body
             else if (!isDrawn) {
-                for (int i = 0; i < snakeBody.getSize(); ++i) {
-                    objPos segment = snakeBody.getElement(i);
+                for (int i = 0; i < snakeBody->getSize(); ++i) {
+                    objPos segment = snakeBody->getElement(i);
 
                     if (row == segment.pos->y && col == segment.pos->x) {
                         MacUILib_printf("%c", segment.symbol); // Snake body symbol

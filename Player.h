@@ -25,7 +25,7 @@ class Player
         void movePlayer(bool foodConsumed);
 
         // More methods to be added here
-        const objPosArrayList& getPlayerPosListRef() const; //the upgrade needed for iteration 3
+        objPosArrayList* getPlayerPosListRef() const; //the upgrade needed for iteration 3
 
     private:
         //objPos playerPos; // No longer need this in iteration 3     
@@ -34,7 +34,7 @@ class Player
         // Need a reference to the Main Game Mechanisms
         GameMechs* mainGameMechsRef;
 
-        objPosArrayList playerPosList; // Store snake body positions
+        objPosArrayList* playerPosList; // Store snake body positions
 };
 
 #endif
