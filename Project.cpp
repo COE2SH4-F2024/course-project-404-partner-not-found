@@ -84,14 +84,13 @@ void RunLogic(void)
     objPos playerHead = myPlayer->getPlayerPosListRef()->getHeadElement();
     objPos foodPos = myFood->getFoodPos();
 
-    myPlayer->movePlayer(true); 
-
     if (playerHead.pos->x == foodPos.pos->x && playerHead.pos->y == foodPos.pos->y) {
-        myPlayer->movePlayer(true); // Grow the snake
+        //myPlayer->movePlayer(true); // Grow the snake
         myGM->incrementScore(); // Increase score
         myFood->generateFood(myPlayer->getPlayerPosListRef()); // Generate new food
     }
 
+    myPlayer->movePlayer(playerHead.pos->x == foodPos.pos->x && playerHead.pos->y == foodPos.pos->y); 
     myGM->clearInput(); // Clear the input to prevent re-processing  
 }
 

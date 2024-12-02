@@ -134,11 +134,10 @@ void Player::movePlayer(bool foodConsumed)
     }
 
     // Insert new head position
-    playerPosList->insertHead(objPos(newX, newY, '&'));
-    playerPosList->removeTail();
+    playerPosList->insertHead(objPos(newX, newY, '@'));
+
 
     // Remove the tail unless food was consumed
-    
     if (!foodConsumed) {
         playerPosList->removeTail();
     }
