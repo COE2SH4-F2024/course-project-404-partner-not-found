@@ -133,6 +133,12 @@ void Player::movePlayer(bool foodConsumed)
         newY = 1;
     }
 
+    if(selfCollisionChecker() == true)
+    {
+        mainGameMechsRef->setLoseFlag();
+        mainGameMechsRef->setExitTrue();
+    }
+
     // Insert new head position
     playerPosList->insertHead(objPos(newX, newY, '@'));
 
@@ -149,4 +155,19 @@ void Player::movePlayer(bool foodConsumed)
 objPosArrayList* Player::getPlayerPosListRef() const
 {
     return playerPosList;
+}
+
+bool Player::selfCollisionChecker(){
+    if(myDir!=STOP)
+    {
+        for(int i=1;i<playerPosList->getSize();i++){
+            if(playerPosList->getHeadElement().pos->x == playerPosList->getElement(i).pos->x && playerPosList->getHeadElement().pos->y == playerPosList->getElement(i).pos->y){
+                return true;
+            }
+        }
+    }
+    else{
+        return false;
+    }
+    
 }

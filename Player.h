@@ -26,6 +26,7 @@ class Player
 
         // More methods to be added here
         objPosArrayList* getPlayerPosListRef() const; //the upgrade needed for iteration 3
+        bool selfCollisionChecker();
 
     private:
         //objPos playerPos; // No longer need this in iteration 3     
