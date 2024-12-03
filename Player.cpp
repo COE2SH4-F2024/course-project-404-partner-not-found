@@ -6,16 +6,8 @@ Player::Player(GameMechs* thisGMRef)
     mainGameMechsRef = thisGMRef;
     myDir = STOP;
 
-    // more actions to be included
-
-    // playerPos.pos->x = mainGameMechsRef -> getBoardSizeX ()/2;
-    // playerPos.pos->y = mainGameMechsRef -> getBoardSizeY ()/2;
-    // playerPos.symbol = '@';
-
-    //Updated for iteration 3
-    //playerPosList.insertTail(objPos(mainGameMechsRef->getBoardSizeX() / 2, mainGameMechsRef->getBoardSizeY() / 2, '@'));
-
-    // edit by Bishal 
+    // makes snake big object using objects from array list of snake parts
+    // then chooses a position on the game board to insert head of snake 
     
     playerPosList = new objPosArrayList();
     objPos initialPosition(mainGameMechsRef->getBoardSizeX() / 2, mainGameMechsRef->getBoardSizeY() / 2, '@');
@@ -87,20 +79,7 @@ void Player::movePlayer(bool foodConsumed)
     // PPA3 Finite State Machine logic
     switch (myDir){
            case UP:    
-            newY--; // initial code snipped 
-
-            /*
-            // reference code 
-            //newY = (headPos.pos->y - 1) > 0 ? headPos.pos->y - 1 : mainGameMechsRef->getBoardSizeY() - 2; 
-            if ((headPos.pos->y - 1) > 0) 
-            {
-                newY = headPos.pos->y - 1;
-            }
-            else 
-            {
-                newY = mainGameMechsRef->getBoardSizeY() - 2;
-            }
-            */ 
+            newY--; 
             break;
         case DOWN:  
             newY++; 
@@ -132,6 +111,8 @@ void Player::movePlayer(bool foodConsumed)
     else if (newY >= boardHeight - 1) {
         newY = 1;
     }
+
+    // checks if snake has run into itself 
 
     if(selfCollisionChecker() == true)
     {

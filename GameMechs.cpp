@@ -3,6 +3,7 @@
 
 GameMechs::GameMechs()
 {
+    // all the intial inputs at the beginning of the program 
     input = 0;
     exitFlag = false;
     loseFlag = false;

@@ -154,8 +154,21 @@ void DrawScreen(void)
 
     //MacUILib_printf("\nPlayer [x, y, symbol] = [%d, %d, %c]\n", playerPos.pos->x, playerPos.pos->y, playerPos.symbol);
     MacUILib_printf("Food [x, y, symbol] = [%d, %d, %c]\n", foodPos.pos->x, foodPos.pos->y, foodPos.symbol);
-    
 
+    // custom end game messages  
+    if (myGM->getExitFlagStatus() == true)
+    {
+        if (myGM->getLoseFlagStatus() == true)
+        {
+            MacUILib_printf("Aw, you ran into yourself! Better luck next time and thanks for playing the game!");
+        }
+        else 
+        {
+            MacUILib_printf("Aw, you left the game! Thanks for playing and come back!");
+
+        }
+    }
+    
 
 }
 
@@ -167,9 +180,8 @@ void LoopDelay(void)
 
 
 void CleanUp(void)
-{
-    MacUILib_clearScreen();    
-
+{  
+    // frees up all the memory used for all the objects 
     delete myPlayer;
     delete myGM;
     delete myFood;
